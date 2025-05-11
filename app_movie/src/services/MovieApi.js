@@ -1,5 +1,4 @@
-const API_URL = 'https://www.omdbapi.com/';
-const API_KEY = '9d21352e';
+
 
 export class MovieApi {
   constructor(httpClient) {

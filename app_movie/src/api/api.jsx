@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 export const fetchMovies = async (query) => {
   const response = await axios.get(API_URL, {
     params: {
