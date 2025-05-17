@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import SearchBar from './components/searchBar'
-import MovieCard from './components/movieCard'
-import MovieDetail from './components/movieDetails'
+import SearchBar from './components/SearchBar'
+import MovieCard from './components/MovieCard'
+import MovieDetail from './components/MovieDetails'
 
 import { AxiosHttpClient } from './services/AxiosHttpClient'
 import { MovieApi } from './services/MovieApi'
@@ -9,7 +9,6 @@ import { MovieApi } from './services/MovieApi'
 const movieApi = new MovieApi(new AxiosHttpClient())
 
 function App() {
-  console.log("ok")
   const [movies, setMovies] = useState([])
   const [selectedMovie, setSelectedMovie] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -38,45 +37,25 @@ function App() {
     setSelectedMovie(data)
   }
 
+  return (
+    <div className="container">
+      <h1 className="title">Busca de Filmes</h1>
 
- return (
-  <div className="container">
-    <h1 className="title">Busca de Filmes</h1>
+      <SearchBar onSearch={handleSearch} />
+      {loading && <p className="info">Carregando...</p>}
+      {error && <p className="error">{error}</p>}
 
-    <SearchBar onSearch={handleSearch} />
-    {loading && <p className="info">Carregando...</p>}
-    {error && <p className="error">{error}</p>}
+      <div className="movies-grid">
+        {movies.map((movie) => (
+          <MovieCard key={movie.imdbID} movie={movie} onSelect={handleSelectMovie} />
+        ))}
+      </div>
 
-    <div className="movies-grid">
-      {movies.map((movie) => (
-        <MovieCard key={movie.imdbID} movie={movie} onSelect={handleSelectMovie} />
-      ))}
+      {selectedMovie && (
+        <MovieDetail movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
+      )}
     </div>
-
-    {selectedMovie && (
-      <MovieDetail movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
-    )}
-  </div>
-)
-
-
-  // return (
-  //   <div>
-  //     <h1>Busca de Filmes</h1>
-      
-  //     <SearchBar onSearch={handleSearch} />
-  //     {loading && <p>Carregando...</p>}
-  //     {error && <p>{error}</p>}
-  //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-  //       {movies.map((movie) => (
-  //         <MovieCard key={movie.imdbID} movie={movie} onSelect={handleSelectMovie} />
-  //       ))}
-  //     </div>
-  //     {selectedMovie && (
-  //       <MovieDetail movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
-  //     )}
-  //   </div>
-  // )
+  )
 }
 
 export default App
